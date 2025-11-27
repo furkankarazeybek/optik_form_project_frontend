@@ -1,6 +1,7 @@
+// src/components/Sidebar.jsx (Güncellenmiş hali)
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { IoPerson, IoPricetag, IoHome, IoLogOut } from "react-icons/io5";
+import { IoPerson, IoHome, IoLogOut, IoDocumentText, IoCloudUpload } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
 
@@ -20,36 +21,33 @@ const Sidebar = () => {
       <aside className="menu pt-4 pl-4 has-shadow">
         <p className="menu-label">Genel</p>
         <ul className="menu-list">
-          <li>
-            <NavLink to={"/dashboard"}>
-              <IoHome className="mr-1" /> Anasayfa
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/products"}>
-              <IoPricetag className="mr-2" />
-              Products
-            </NavLink>
-          </li>
+          <li><NavLink to={"/dashboard"}><IoHome className="mr-2" /> Anasayfa</NavLink></li>
         </ul>
-        {user && user.role === "admin" && (
+
+        {user && (user.role === "teacher") && (
           <div>
-            <p className="menu-label">Admin</p>
+            <p className="menu-label">Sınav İşlemleri</p>
             <ul className="menu-list">
-              <li>
-                <NavLink to={"/users"}>
-                  <IoPerson className="mr-2" />
-                  Kullanıcılar
-                </NavLink>
-              </li>
+              <li><NavLink to={"/exams"}><IoDocumentText className="mr-2" /> Sınav Listesi</NavLink></li>
+              <li><NavLink to={"/exams/add"}><IoDocumentText className="mr-2" /> Yeni Sınav Oluştur</NavLink></li>
+              <li><NavLink to={"/upload-optic"}><IoCloudUpload className="mr-2" /> Optik Yükle</NavLink></li>
             </ul>
           </div>
         )}
 
-        <p className="menu-label">Çıkış Yap</p>
+        {user && user.role === "admin" && (
+          <div>
+            <p className="menu-label">Admin</p>
+            <ul className="menu-list">
+              <li><NavLink to={"/users"}><IoPerson className="mr-2" /> Kullanıcılar</NavLink></li>
+            </ul>
+          </div>
+        )}
+
+        <p className="menu-label">Oturum</p>
         <ul className="menu-list">
           <li>
-            <button onClick={logout} className="button is-danger is-light">
+            <button onClick={logout} className="button is-danger is-light is-fullwidth">
               <IoLogOut className="mr-2" /> Çıkış
             </button>
           </li>

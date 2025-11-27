@@ -8,25 +8,29 @@ const FormEditUser = () => {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   const [role, setRole] = useState("");
+  const [number, setNumber] = useState(""); // Öğrenci Numarası state'i eklendi
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
-    const getUserById = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5050/users/${id}`);
-        setName(response.data.name);
-        setEmail(response.data.email);
-        setRole(response.data.role);
-      } catch (error) {
-        if (error.response) {
-          setMsg(error.response.data.msg);
-        }
-      }
-    };
     getUserById();
-  }, [id]);
+  }, [id]); // id değiştiğinde tekrar yükle
+
+  const getUserById = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5050/users/${id}`);
+      setName(response.data.name);
+      setEmail(response.data.email);
+      setRole(response.data.role);
+      // Öğrenci Numarası varsa yükle
+      setNumber(response.data.number || ""); 
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
+  };
 
   const updateUser = async (e) => {
     e.preventDefault();
@@ -37,6 +41,8 @@ const FormEditUser = () => {
         password: password,
         confPassword: confPassword,
         role: role,
+        // Backend'e number'ı sadece rol 'user' ise gönder
+        number: role === "user" ? number : null, 
       });
       navigate("/users");
     } catch (error) {
@@ -55,6 +61,8 @@ const FormEditUser = () => {
           <div className="content">
             <form onSubmit={updateUser}>
               <p className="has-text-centered has-text-danger">{msg}</p>
+              
+              {/* MEVCUT ALANLAR KORUNDU */}
               <div className="field">
                 <label className="label">Name</label>
                 <div className="control">
@@ -64,21 +72,25 @@ const FormEditUser = () => {
                     placeholder="John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
                   />
                 </div>
               </div>
+              
               <div className="field">
                 <label className="label">Email</label>
                 <div className="control">
                   <input
-                    type="text"
+                    type="email"
                     className="input"
                     placeholder="example@mail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
               </div>
+              
               <div className="field">
                 <label className="label">Password</label>
                 <div className="control">
@@ -91,6 +103,7 @@ const FormEditUser = () => {
                   />
                 </div>
               </div>
+              
               <div className="field">
                 <label className="label">Confirm Password</label>
                 <div className="control">
@@ -103,13 +116,21 @@ const FormEditUser = () => {
                   />
                 </div>
               </div>
+              
+              {/* Role Seçimi */}
               <div className="field">
                 <label className="label">Role</label>
                 <div className="control">
                   <div className="select is-fullwidth">
                     <select
                       value={role}
-                      onChange={(e) => setRole(e.target.value)}
+                      onChange={(e) => {
+                        setRole(e.target.value);
+                        // Rol değiştiğinde öğrenci numarasını temizle
+                        if (e.target.value !== "user") {
+                            setNumber(""); 
+                        }
+                      }}
                     >
                       <option value="admin">Admin</option>
                       <option value="teacher">Öğretmen</option>
@@ -118,6 +139,25 @@ const FormEditUser = () => {
                   </div>
                 </div>
               </div>
+
+              {/* YENİ EKLENEN ÖĞRENCİ NUMARASI ALANI */}
+              {role === "user" && (
+                <div className="field">
+                  <label className="label has-text-danger">Öğrenci Numarası</label>
+                  <div className="control">
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Öğrenci Okul Numarası"
+                      value={number}
+                      onChange={(e) => setNumber(e.target.value)}
+                      // Öğrenci rolü seçiliyken bu alan zorunludur
+                      required={role === "user"} 
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button px-6 mt-6 is-success">

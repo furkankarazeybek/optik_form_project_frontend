@@ -38,7 +38,6 @@ const Layout = ({ children }) => {
               left: "50%",
             }}
           >
-            Copyright &copy; 2023 AdminPro. All Rights Reserved.
           </div>
         </div>
       </div>
