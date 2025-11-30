@@ -6,7 +6,7 @@ import App from "./App";
 import "bulma/css/bulma.css";
 import axios from "axios";
 
-// agar tidak reset secara manual setiap request
+
 axios.defaults.withCredentials = true;
 
 const container = document.getElementById("root");

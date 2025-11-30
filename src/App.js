@@ -13,7 +13,7 @@ import UploadOptic from "./pages/UploadOptic.jsx";
 import ExamResults from "./pages/ExamResults.jsx";
 import StudentResults from "./pages/StudentResults.jsx";
 import StudentResultDetail from "./pages/StudentResultDetail.jsx";
-
+import EditExam from "./pages/EditExam.jsx";
 function App() {
   return (
     <div>
@@ -30,6 +30,7 @@ function App() {
           {/* Sınav İşlemleri */}
           <Route path="/exams" element={<ExamList />} />
           <Route path="/exams/add" element={<AddExam />} />
+          <Route path="/exams/edit/:id" element={<EditExam />} /> {/* YENİ ROTA */}
           <Route path="/upload-optic" element={<UploadOptic />} />
           <Route path="/exams/:id/results" element={<ExamResults />} />
           <Route path="/exams/:id/questions" element={<ExamQuestions />} />
