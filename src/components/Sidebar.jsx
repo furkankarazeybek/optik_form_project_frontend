@@ -44,6 +44,20 @@ const Sidebar = () => {
           </div>
         )}
 
+        {user && user.role === "user" && (
+          <div>
+            <p className="menu-label">Öğrenci İşlemleri</p>
+            <ul className="menu-list">
+              <li>
+                <NavLink to={"/my-results"}>
+                  <IoDocumentText className="mr-2" />
+                  Sınav Sonuçlarım
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        )}
+
         <p className="menu-label">Oturum</p>
         <ul className="menu-list">
           <li>

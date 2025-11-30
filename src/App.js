@@ -11,6 +11,8 @@ import ExamList from "./pages/ExamList.jsx";
 import AddExam from "./pages/AddExam.jsx";
 import UploadOptic from "./pages/UploadOptic.jsx";
 import ExamResults from "./pages/ExamResults.jsx";
+import StudentResults from "./pages/StudentResults.jsx";
+import StudentResultDetail from "./pages/StudentResultDetail.jsx";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path="/upload-optic" element={<UploadOptic />} />
           <Route path="/exams/:id/results" element={<ExamResults />} />
           <Route path="/exams/:id/questions" element={<ExamQuestions />} />
+          <Route path="/my-results" element={<StudentResults />} />
+          <Route path="/my-results/:resultId" element={<StudentResultDetail />} />
 
         </Routes>
       </BrowserRouter>
